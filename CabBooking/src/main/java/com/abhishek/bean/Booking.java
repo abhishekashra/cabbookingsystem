@@ -4,36 +4,43 @@
 package com.abhishek.bean;
 
 /**
- * @author Kishori
+ * @author abhishek
  *
  */
 public class Booking {
 
-	private int bookingId;
-	private Driver driver;
-	private Customer customer;
-	public int getBookingId() {
-		return bookingId;
+	private String driverName;
+	private String customerName;
+	private String driverStatus;
+
+	public String getDriverName() {
+		return driverName;
 	}
-	public void setBookingId(int bookingId) {
-		this.bookingId = bookingId;
+
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
 	}
-	public Driver getDriver() {
-		return driver;
+
+	public String getCustomerName() {
+		return customerName;
 	}
-	public void setDriver(Driver driver) {
-		this.driver = driver;
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
-	public Customer getCustomer() {
-		return customer;
+
+	public String getDriverStatus() {
+		return driverStatus;
 	}
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+
+	public void setDriverStatus(String driverStatus) {
+		this.driverStatus = driverStatus;
 	}
+
 	@Override
 	public String toString() {
-		return "Booking [bookingId=" + bookingId + ", driver=" + driver + ", customer=" + customer + "]";
+		return "Booking [driverName=" + driverName + ", customerName=" + customerName + ", driverStatus=" + driverStatus
+				+ "]";
 	}
-	
-	
+
 }

@@ -68,9 +68,9 @@ $(document).ready(function() {
 		var tr=[];
 		for (var i = 0; i < json.length; i++) {
 			tr.push('<tr>');
-			tr.push('<td>' + json[i].driver.driverName + '</td>');
-			tr.push('<td>' + json[i].customer.customerName+ '</td>');
-			tr.push('<td>' + json[i].driver.status+ '</td>');
+			tr.push('<td>' + json[i].driverName + '</td>');
+			tr.push('<td>' + json[i].customerName+ '</td>');
+			tr.push('<td>' + json[i].driverStatus+ '</td>');
 			tr.push('</tr>');
 		}
 		$('#bookingTable').append($(tr.join('')));
@@ -80,28 +80,28 @@ $(document).ready(function() {
 		event.preventDefault();
 		
 		var name = $('#name').val();
-		var currentLatitude = $('#currentLatitude').val();
-		var customerLongitude = $('#currentLongitude').val();
-		
+		var customerLatitude = $('#customerLatitude').val();
+		var customerLongitude = $('#customerLongitude').val();
+		var requestParameter = {
+				'customerName': name,
+				'customerLatitude': customerLatitude,
+				'customerLongitude': customerLongitude,
+			};
+		console.log(JSON.stringify(requestParameter));
 		$.ajax({
-			type: "POST",
-			contentType: "application/json; charset=utf-8",
-			url: "http://localhost:8080/CabBookingManagement/Booking/CreateBooking",
-			data: 
-					{
-						'customerName': name,
-						'customerLatitude': currentLatitude,
-						'customerLongitude': currentLongitude,
-					},
-			cache: false,
-			success: function(result) {
-				$("#msg").html( "<span style='color: green'>Cab Booked Successfully</span>" );
+		    type: 'POST', 
+		    url: 'http://localhost:8080/CabBookingManagement/Booking/CreateBooking', 
+		    data: JSON.stringify(requestParameter), // stringyfy before passing
+		    dataType: 'json', // payload is json
+		    contentType : 'application/json',
+		    success: function(result) {
+				$("#msg").html(result);
 				window.setTimeout(function(){location.reload()},1000)
 			},
 			error: function(err) {
 				$("#msg").html( "<span style='color: red'>Name is required</span>" );
 			}
-		});
+		    });
 	});
 });
 </script>
@@ -132,13 +132,13 @@ $(document).ready(function() {
 			</tr>
 			<tr>
 				<td><label>Current Latitude</label></td>
-				<td><input type="text" id="currentLatitude"
-					name="currentLatitude"></td>
+				<td><input type="text" id="customerLatitude"
+					name="customerLatitude"></td>
 			</tr>
 			<tr>
 				<td><label>Current Longitude</label></td>
-				<td><input type="text" id="currentLongitude"
-					name="currentLongitude"></td>
+				<td><input type="text" id="customerLongitude"
+					name="customerLongitude"></td>
 			</tr>
 		</table>
 		<input type="submit" id="addNew" value="Submit">

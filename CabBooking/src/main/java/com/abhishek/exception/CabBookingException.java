@@ -4,7 +4,7 @@ package com.abhishek.exception;
  */
 
 /**
- * @author Kishori
+ * @author abhishek
  *
  */
 public class CabBookingException extends Exception {

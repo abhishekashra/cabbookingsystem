@@ -18,6 +18,7 @@ public class Driver implements Serializable {
 	private double currentLatitude;
 	private double currentLogitude;
 	private String status;
+	private int orderId;
 
 	public int getDriverId() {
 		return driverId;
@@ -59,10 +60,18 @@ public class Driver implements Serializable {
 		this.status = status;
 	}
 
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
 	@Override
 	public String toString() {
 		return "Driver [driverId=" + driverId + ", driverName=" + driverName + ", currentLatitude=" + currentLatitude
-				+ ", currentLogitude=" + currentLogitude + ", status=" + status + "]";
+				+ ", currentLogitude=" + currentLogitude + ", status=" + status + ", orderId=" + orderId + "]";
 	}
 
 }

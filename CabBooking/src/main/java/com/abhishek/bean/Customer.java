@@ -3,30 +3,23 @@
  */
 package com.abhishek.bean;
 
-import java.io.Serializable;
-
 /**
  * @author abhishek
  *
  */
-public class Customer implements Serializable {
+public class Customer {
 
-	private static final long serialVersionUID = -4657045381386302847L;
-
-	private int customerId;
-
+	private int orderId;
 	private String customerName;
-
 	private double customerLatitude;
-
 	private double customerLongitude;
 
-	public int getCustomerId() {
-		return customerId;
+	public int getOrderId() {
+		return orderId;
 	}
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 
 	public String getCustomerName() {
@@ -55,7 +48,7 @@ public class Customer implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Customer [customerId=" + customerId + ", customerName=" + customerName + ", customerLatitude="
+		return "Customer [orderId=" + orderId + ", customerName=" + customerName + ", customerLatitude="
 				+ customerLatitude + ", customerLongitude=" + customerLongitude + "]";
 	}
 

@@ -1,0 +1,55 @@
+/**
+ * 
+ */
+package com.abhishek.service.impl;
+
+import java.util.List;
+import java.util.TreeMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.abhishek.bean.Customer;
+import com.abhishek.bean.Driver;
+import com.abhishek.dao.BookingDao;
+import com.abhishek.dao.CustomerDao;
+import com.abhishek.dao.DriverDao;
+import com.abhishek.service.CustomerService;
+import com.abhishek.util.BookingHelper;
+
+/**
+ * @author Kishori
+ *
+ */
+@Service
+@Transactional
+public class CustomerServiceImpl implements CustomerService {
+	
+	@Autowired
+	private CustomerDao customerDao;
+	
+	@Autowired
+	private BookingDao bookingDao;
+
+	@Autowired
+	private BookingHelper bookingHelper;
+	
+	@Autowired
+	private DriverDao driverDao;
+	
+	@Override
+	public synchronized void addCustomer(Customer customer) {
+		TreeMap<Double, Integer> treemap = new TreeMap<>();
+		List<Driver> driverList = driverDao.getAvailableDriver();
+		for(Driver driver: driverList) {
+			double distance =  bookingHelper.distance(customer.getCustomerLatitude(), driver.getCurrentLatitude(), customer.getCustomerLongitude(), driver.getCurrentLogitude());
+			treemap.put(distance, driver.getDriverId());
+		}
+		
+		System.out.println("Least Distance is :"+treemap.firstEntry().getKey()+" for Driver "+treemap.firstEntry().getValue());
+		customerDao.addCustomer(customer);
+		driverDao.updateDriver(treemap.firstEntry().getValue(),customer.getOrderId());
+	}
+
+}

@@ -14,10 +14,10 @@ public class DriverMapper implements RowMapper<Driver> {
 		Driver driver = new Driver();
 		driver.setDriverId(rs.getInt("driverId"));
 		driver.setDriverName(rs.getString("driverName"));
-		driver.setCurrentLatitude(rs.getInt("currentLatitude"));
-		driver.setCurrentLogitude(rs.getInt("currentLogitude"));
+		driver.setCurrentLatitude(rs.getDouble("currentLatitude"));
+		driver.setCurrentLogitude(rs.getDouble("currentLogitude"));
 		driver.setStatus(rs.getString("status"));
-		
+		driver.setOrderId(rs.getInt("orderId"));
 		return driver;
 		
 	}

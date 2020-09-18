@@ -12,20 +12,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookingHelper {
 
-	public double distance(double lat1, double lat2, double lon1, double lon2) {
+	/**
+	 * This method is a Business logic to get the distance between the driver and customer
+	 * based on driver's Latitude + Longitude and customers Latitude + Longitude
+	 * 
+	 * @param customerLatitude
+	 * @param driverLatitude
+	 * @param customerLongitude
+	 * @param driverLongitude
+	 * @return Distance between both Customer and Driver
+	 */
+	public double distance(double customerLatitude, double driverLatitude, double customerLongitude, double driverLongitude) {
 
 		// The math module contains a function
 		// named toRadians which converts from
 		// degrees to radians.
-		lon1 = Math.toRadians(lon1);
-		lon2 = Math.toRadians(lon2);
-		lat1 = Math.toRadians(lat1);
-		lat2 = Math.toRadians(lat2);
+		customerLongitude = Math.toRadians(customerLongitude);
+		driverLongitude = Math.toRadians(driverLongitude);
+		customerLatitude = Math.toRadians(customerLatitude);
+		driverLatitude = Math.toRadians(driverLatitude);
 
 		// Haversine formula
-		double dlon = lon2 - lon1;
-		double dlat = lat2 - lat1;
-		double a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
+		double dlon = driverLongitude - customerLongitude;
+		double dlat = driverLatitude - customerLatitude;
+		double a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(customerLatitude) * Math.cos(driverLatitude) * Math.pow(Math.sin(dlon / 2), 2);
 
 		double c = 2 * Math.asin(Math.sqrt(a));
 

@@ -3,7 +3,6 @@
  */
 package com.abhishek.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -44,13 +43,13 @@ public class BookingServiceImpl implements BookingService {
 	BookingHelper bookingHelper;
 
 	@Transactional
-	public List<Booking> getBookings() {
+	public List<Booking> getBookings() throws CabBookingException {
 		logger.debug("Inside DriverServiceImpl: getBookings()");
 		return bookingDao.getAllBooking();
 	}
 
 	@Override
-	public String addBooking(Customer customer) throws CabBookingException {
+	public synchronized String addBooking(Customer customer) throws CabBookingException {
 		StringBuilder bookingStatus = new StringBuilder();
 		TreeMap<Double, Integer> treemap = new TreeMap<>();
 		List<Driver> driverList = driverDao.getAvailableDriver();
@@ -61,31 +60,24 @@ public class BookingServiceImpl implements BookingService {
 				treemap.put(distance, driver.getDriverId());
 			}
 			if (treemap.firstEntry().getKey() != -1) {
-				if(customerDao.addCustomer(customer) !=0) {
-					Booking booking = new Booking();
-					booking.getDriver().setDriverId(treemap.firstEntry().getValue());
-					booking.getCustomer().setCustomerId(customer.getCustomerId());
-					if (bookingDao.addBooking(booking) != 0) {
-						if (driverDao.updateDriverStatus(treemap.firstEntry().getValue()) != 0) {
-							bookingStatus.append("Cab Booked Successfully for Customer "+customer.getCustomerName()+"For Driver "+treemap.firstEntry().getValue());
-						} else {
-							bookingStatus.append("No Driver Ready to accept the ride");
-						}
-					}else {
-						bookingStatus.append("Booking the cab Failed!!!");
+				customer.setOrderId(customerDao.addCustomer(customer));
+				if (customer.getOrderId() != 0) {
+					if (driverDao.updateDriver(treemap.firstEntry().getValue(), customer.getOrderId()) != 0) {
+						bookingStatus.append("Cab Booked Successfully for Customer " + customer.getCustomerName()
+								+ "For Driver " + treemap.firstEntry().getValue());
+					} else {
+						bookingStatus.append("No Driver Ready to accept the ride");
 					}
-				}else {
+				} else {
 					bookingStatus.append("Booking the cab Failed!!!");
 				}
 			} else {
-				bookingStatus.append("No Avaialable Cabs Nearby, Sorry Do visit Again!!! ");
+				bookingStatus.append("No Avaialable Cabs Nearby, Sorry Do visit Again!!!");
 			}
 		} else {
 			bookingStatus.append("Every Cab Driver is on Leave, Its there Holiday");
 		}
-		logger.debug("Least Distance is :" + treemap.firstEntry().getKey() + " for Driver "
-				+ treemap.firstEntry().getValue());
-
+		logger.debug(bookingStatus.toString());
 		return bookingStatus.toString();
 
 	}

@@ -3,47 +3,49 @@
  */
 package com.abhishek.dao.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.abhishek.bean.Customer;
 import com.abhishek.dao.CustomerDao;
-import com.abhishek.exception.CabBookingException;
 
 /**
- * @author Kishori
+ * @author abhishek
  *
  */
 @Repository
 public class CustomerDaoImpl implements CustomerDao {
 	
 	private static final Logger logger = Logger.getLogger(CustomerDaoImpl.class);
-	
+		
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate; 
 	
  
 	@Override
 	public int addCustomer(Customer customer) {
 		logger.debug("Inside CustomerDaoImpl: addCustomer()");
-		int customerStatus = 0;
-		Map<String,Object> namedParameter = new HashMap<>();
-		namedParameter.put("customerName",customer.getCustomerName());
-		namedParameter.put("customerLatitude", customer.getCustomerLatitude());
-		namedParameter.put("customerLongitude", customer.getCustomerLongitude());
-		String sql = "insert into Customer(customerName,customerLatitude, customerLongitude) values (:customerName,:customerLatitude,:customerLongitude)";
+		int customerId = 0;
+		KeyHolder holder = new GeneratedKeyHolder();
+		SqlParameterSource namedParameter = new MapSqlParameterSource()
+				.addValue("customerName",customer.getCustomerName())
+				.addValue("customerLatitude", customer.getCustomerLatitude())
+				.addValue("customerLongitude", customer.getCustomerLongitude());
+		String sql = "insert into Orders(customerName, customerLatitude, customerLongitude) values (:customerName,:customerLatitude,:customerLongitude);";
 		try {
-			customerStatus = jdbcTemplate.update(sql,namedParameter);	
+			namedParameterJdbcTemplate.update(sql, namedParameter, holder);
+			customerId = (int) holder.getKeys().get("OrderId");
+			
 		}catch (Exception e) {
-			customerStatus = 0;
-			//throw new CabBookingException("Issue occured while booking the cab");
+			customerId = 0;
 		}
-		return customerStatus;
+		return customerId;
 	}
 
 }

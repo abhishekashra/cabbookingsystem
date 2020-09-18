@@ -9,14 +9,15 @@ import com.abhishek.bean.Booking;
 import com.abhishek.exception.CabBookingException;
 
 /**
- * @author Kishori
+ * @author abhishek
  *
  */
 public interface BookingDao {
 	
-	public List<Booking> getAllBooking();
-
-	public int addBooking(Booking booking) throws CabBookingException;
-	
+	/**
+	 * This method is used to get all the Bookings to view on screen
+	 * @return {@link List} of {@link Booking}
+	 */
+	public List<Booking> getAllBooking() throws CabBookingException;
 
 }

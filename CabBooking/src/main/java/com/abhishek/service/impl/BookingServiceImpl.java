@@ -63,8 +63,7 @@ public class BookingServiceImpl implements BookingService {
 				customer.setOrderId(customerDao.addCustomer(customer));
 				if (customer.getOrderId() != 0) {
 					if (driverDao.updateDriver(treemap.firstEntry().getValue(), customer.getOrderId()) != 0) {
-						bookingStatus.append("Cab Booked Successfully for Customer " + customer.getCustomerName()
-								+ "For Driver " + treemap.firstEntry().getValue());
+						bookingStatus.append("Cab Booked Successfully " + customer.getCustomerName());
 					} else {
 						bookingStatus.append("No Driver Ready to accept the ride");
 					}

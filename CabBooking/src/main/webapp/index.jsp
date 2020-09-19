@@ -63,6 +63,11 @@
 }
 </style>
 <script type="text/javascript">
+
+function cache_clear() {
+	  window.location.reload(true);
+	  // window.location.reload(); use this if you do not remove cache
+	}
 $(document).ready(function() {
 	$.getJSON('http://localhost:8080/CabBookingManagement/Booking/GetBookings', function(json) {
 		var tr=[];
@@ -97,11 +102,9 @@ $(document).ready(function() {
 		    success: function(result) {
 				$("#msg").html(result);
 				window.setTimeout(function(){location.reload()},1000)
-			},
-			error: function(err) {
-				$("#msg").html( "<span style='color: red'>Name is required</span>" );
 			}
 		    });
+		cache_clear();
 	});
 });
 </script>
@@ -109,11 +112,10 @@ $(document).ready(function() {
 <body>
 
 	<h2>Cab Management Portal</h2>
-
-	<p>
-		<a class='btn' href="#add" rel="modal:open">Book Cab</a>
-	</p>
-
+	<a class='btn' href="#add" rel="modal:open">Book Cab</a>
+	<button onClick="cache_clear();">Click her to Refresh</button>
+	<br/>
+	<br/>
 	<table id="bookingTable" border="1" cellspacing="0" cellpadding="5">
 		<tr>
 			<th>Driver Name</th>
@@ -121,7 +123,7 @@ $(document).ready(function() {
 			<th>Status</th>
 		</tr>
 	</table>
-
+	<p>If the booking has happened it will be visible</p>
 	<form id="add" action="#" class="add_form modal" style="display: none;">
 		<div id='msg' />
 		<h3>Customer Details</h3>
@@ -143,6 +145,7 @@ $(document).ready(function() {
 		</table>
 		<input type="submit" id="addNew" value="Submit">
 	</form>
-
+	<br/>
+	
 </body>
 </html>

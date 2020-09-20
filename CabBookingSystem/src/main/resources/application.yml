@@ -1,0 +1,18 @@
+spring:
+  profiles: local,default
+  application:
+    name: CabBookingSystem
+datasource:
+  cabbooking:
+    url: jdbc:postgresql://localhost:5432/PRACTICE
+    username: postgres
+    password: Abhishek_1992
+    driverClassName: org.postgresql.Driver
+logging:
+  file: "${catalina.base}/logs/${spring.application.name}.log"
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+
+    
